@@ -2,66 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SLEGSWORLDS</title>
     <style>
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: url('https://i.pinimg.com/1200x/4c/0b/cc/4c0bcc4430107a637a3eee2bfb827c08.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Georgia', serif;
-            animation: fadeIn 4s ease-in; /* The cinematic entry */
-        }
-        #overlay { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.7); z-index: 10; transition: 2s; }
-        .btn { padding: 15px 40px; background: transparent; border: 1px solid #e5d493; color: #e5d493; cursor: pointer; letter-spacing: 3px; font-size: 1.2rem; transition: 0.5s; }
-        .btn:hover { background: #e5d493; color: #000; }
-        #env-container { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none; }
-        .envelope { width: 150px; height: 100px; background: #5a1818; border: 2px solid #3a0808; opacity: 0; transition: 3s; pointer-events: auto; cursor: pointer; display: flex; justify-content: center; align-items: center; color: #e5d493; font-weight: bold; }
-        .envelope.show { opacity: 1; transform: scale(1.1); }
-        #letter { display: none; position: fixed; top: 10%; left: 15%; width: 70%; height: 80%; background: rgba(15, 15, 18, 0.95); color: #e5d493; padding: 40px; overflow-y: auto; z-index: 20; text-align: center; border: 1px solid #5a1818; cursor: pointer; }
+        body { margin: 0; overflow: hidden; background: #020202; color: #d4c4a8; font-family: 'Georgia', serif; }
+        #video-bg { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
+        #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.4); }
+        .btn { padding: 20px 50px; background: rgba(0,0,0,0.6); border: 2px solid #5a1818; color: #e5d493; cursor: pointer; letter-spacing: 5px; font-size: 1.5rem; text-transform: uppercase; }
+        #poem-box { display: none; position: absolute; top: 15%; left: 20%; width: 60%; height: 70%; background: rgba(10, 10, 10, 0.85); border: 1px solid #4a1010; padding: 50px; overflow-y: auto; text-align: center; box-shadow: 0 0 20px #000; }
     </style>
 </head>
 <body>
 
+    <video autoplay muted loop id="video-bg">
+        <source src="intro.mp4" type="video/mp4">
+    </video>
+
     <div id="overlay">
-        <button class="btn" onclick="start()">ENTER OUR FOREVER</button>
+        <button class="btn" onclick="revealPoem()">ENTER THE SANCTUARY</button>
     </div>
 
-    <div id="env-container">
-        <div id="envelope" class="envelope" onclick="document.getElementById('letter').style.display='block'">READ</div>
-    </div>
-
-    <div id="letter" onclick="this.style.display='none'">
-        <p style="white-space:pre-line; font-style:italic; line-height:2.0; font-size: 1.2rem;">
-            I crawled from the ruins of a betrayed kingdom,
-            Heavy with the dust of old wars.
-            I walked with ghosts in the twilight mist,
-            My heart a locked vault, afraid of the light.
-            Then, you built a fortress from a single glance.
-            Heaven saw my fractured soul,
-            And sent a holy grace I did not deserve.
-            Yet, storms still rage from my blinded fears.
-            My soul still aches from the poison of the past.
-            In the dark, my old scars echoed—
-            And I lashed out, hurting the one I love.
-            But day by day, I just fall deeper.
-            Into your abyss, where my terrors finally erase.
-            We are bound by the anchor of the Holy Spirit.
-            Tonight, my eyes look to heaven,
-            And I choose to trust in you again.
-            Our battles, our scars, and this beautiful love—
-            I leave them safely in God’s holy hands.
+    <div id="poem-box">
+        <p style="white-space:pre-line; font-style:italic; line-height:2.2; font-size: 1.3rem;">
+            [Insert your beautiful poem here]
         </p>
     </div>
 
     <script>
-        function start() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('envelope').classList.add('show');
-            }, 2000);
+        function revealPoem() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('poem-box').style.display = 'block';
+            // Trigger audio if you have an audio file here
         }
     </script>
 </body>
