@@ -30,9 +30,7 @@
         let clicks = 0;
         function playGame() {
             clicks++;
-            const btn = document.getElementById('game-btn');
             const msg = document.getElementById('msg');
-            
             if (clicks < 3) {
                 msg.innerText = "Break the seal (" + (3 - clicks) + ")";
             } else {
