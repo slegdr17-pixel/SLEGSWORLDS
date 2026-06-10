@@ -4,12 +4,12 @@
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; overflow: hidden; background: #000; color: #d4c4a8; font-family: 'UnifrakturMaguntia', cursive; }
-        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; transition: opacity 1.5s; }
+        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; transition: opacity 2s; }
         #stage { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: opacity 1s; text-align: center; }
         .btn { padding: 20px 40px; background: transparent; border: 2px solid #d4c4a8; color: #d4c4a8; cursor: pointer; font-size: 2rem; font-family: 'UnifrakturMaguntia'; transition: 0.3s; }
         .btn:hover { background: #d4c4a8; color: #000; }
-        #main-content { display: none; opacity: 0; transition: opacity 2s; text-align: center; margin-top: 5%; }
-        #poem-box { width: 70%; margin: 0 auto; background: rgba(0,0,0,0.8); padding: 40px; border: 1px solid #5a1818; }
+        /* Poem/Final Message Styling */
+        #final-msg { display: none; padding: 50px; font-size: 3rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -20,6 +20,8 @@
         <button id="main-btn" class="btn" onclick="nextStage()">ENTER</button>
     </div>
 
+    <div id="final-msg">I love youuuuu te amo my Luka</div>
+
     <script>
         let stage = 0;
         const v = document.getElementById('bg-video');
@@ -29,22 +31,27 @@
 
         function nextStage() {
             stage++;
-            if (stage === 1) {
-                s.src = "00.mp4"; // Ensure this is the correct file
-                v.load();
-                msg.innerText = "Welcome, Luka, my love";
-                btn.innerText = "START";
-            } else if (stage === 2) {
-                msg.innerText = "Collect 10 Hearts";
-                btn.innerText = "START GAME";
-            } else if (stage === 3) {
-                msg.innerText = "Break the seal";
-                btn.innerText = "BREAK";
-            } else {
-                document.getElementById('stage').style.display = 'none';
-                // Trigger your poem and final message
-                msg.innerHTML = "I love youuuuu te amo my Luka";
-            }
+            v.style.opacity = '0'; // Fade out video during transition
+            
+            setTimeout(() => {
+                if (stage === 1) {
+                    s.src = "00.mp4"; // The Intro Video
+                    v.load();
+                    msg.innerText = "Welcome, Luka, my love";
+                    btn.innerText = "START";
+                } else if (stage === 2) {
+                    msg.innerText = "Collect 10 Hearts";
+                    btn.innerText = "START GAME";
+                    // Here we will add the Game Canvas later
+                } else if (stage === 3) {
+                    msg.innerText = "Break the seal";
+                    btn.innerText = "BREAK";
+                } else {
+                    document.getElementById('stage').style.display = 'none';
+                    document.getElementById('final-msg').style.display = 'block';
+                }
+                v.style.opacity = '1'; // Fade back in
+            }, 1000);
         }
     </script>
 </body>
