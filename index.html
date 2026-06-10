@@ -4,53 +4,90 @@
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; overflow: hidden; background: #000; color: #d4c4a8; font-family: 'UnifrakturMaguntia', cursive; }
-        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; transition: opacity 2s; }
-        #stage { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: opacity 1s; text-align: center; }
-        .btn { padding: 20px 40px; background: transparent; border: 2px solid #d4c4a8; color: #d4c4a8; cursor: pointer; font-size: 2rem; font-family: 'UnifrakturMaguntia'; transition: 0.3s; }
+        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
+        .scene { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; opacity: 0; transition: opacity 3s ease-in-out; }
+        .btn { padding: 20px 40px; background: transparent; border: 2px solid #d4c4a8; color: #d4c4a8; cursor: pointer; font-size: 1.5rem; font-family: 'UnifrakturMaguntia'; transition: 0.5s; }
         .btn:hover { background: #d4c4a8; color: #000; }
-        #final-msg { display: none; padding: 50px; font-size: 3rem; text-align: center; }
+        #game-canvas { background: rgba(0,0,0,0.4); border: 2px solid #d4c4a8; cursor: none; }
+        #poem-box { width: 70%; max-height: 70vh; overflow-y: auto; background: rgba(0,0,0,0.85); padding: 40px; border: 1px solid #5a1818; font-size: 1.4rem; font-style: italic; font-weight: bold; line-height: 1.8; }
     </style>
 </head>
 <body>
-    <video id="bg-video" class="bg-vid" autoplay muted loop>
-        <source id="vid-source" src="000.mp4" type="video/mp4">
-    </video>
+    <video id="bg-video" class="bg-vid" autoplay muted loop><source src="000.mp4" type="video/mp4"></video>
 
-    <div id="stage">
-        <h1 id="msg" style="font-size: 4rem; text-shadow: 0 0 20px #5a1818;">Thank you for everything</h1>
-        <button id="main-btn" class="btn" onclick="nextStage()">ENTER</button>
+    <div id="scene-1" class="scene" style="display: flex; opacity: 1;">
+        <h1 style="font-size: 3.5rem; font-style: italic; font-weight: bold;">Thank you for everything</h1>
+        <button class="btn" onclick="nextScene(2)">ENTER</button>
     </div>
 
-    <div id="final-msg">I love youuuuu te amo my Luka</div>
+    <div id="scene-2" class="scene">
+        <h1 style="font-size: 3.5rem; font-style: italic; font-weight: bold;">Welcome, my love, Luka</h1>
+        <button class="btn" onclick="nextScene(3)">START GAME</button>
+    </div>
+
+    <div id="scene-3" class="scene">
+        <canvas id="game-canvas" width="600" height="400"></canvas>
+        <p>Catch 10 Hearts!</p>
+    </div>
+
+    <div id="scene-4" class="scene">
+        <div id="poem-box">
+            I crawled from the ruins of a betrayed kingdom,<br>
+            Heavy with the dust of old wars.<br>
+            I walked with ghosts in the twilight mist,<br>
+            My heart a locked vault, afraid of the light.<br><br>
+            Then, you built a fortress from a single glance.<br>
+            Heaven saw my fractured soul,<br>
+            And sent a holy grace I did not deserve.<br>
+            Yet, storms still rage from my blinded fears.<br><br>
+            My soul still aches from the poison of the past.<br>
+            In the dark, my old scars echoed—<br>
+            And I lashed out, hurting the one I love.<br>
+            But day by day, I just fall deeper.<br><br>
+            Into your abyss, where my terrors finally erase.<br>
+            We are bound by the anchor of the Holy Spirit.<br>
+            Tonight, my eyes look to heaven,<br>
+            And I choose to trust in you again.<br><br>
+            Our battles, our scars, and this beautiful love—<br>
+            I leave them safely in God’s holy hands.<br><br>
+            <button class="btn" onclick="nextScene(5)">BREAK SEAL</button>
+        </div>
+    </div>
+
+    <div id="scene-5" class="scene">
+        <h1 style="font-size: 4rem; font-style: italic; font-weight: bold;">I love you forever, Luka!</h1>
+    </div>
 
     <script>
-        let stage = 0;
-        const v = document.getElementById('bg-video');
-        const s = document.getElementById('vid-source');
-        const msg = document.getElementById('msg');
-        const btn = document.getElementById('main-btn');
-
-        function nextStage() {
-            stage++;
-            v.style.opacity = '0';
+        function nextScene(n) {
+            const current = document.querySelector('.scene[style*="display: flex"]');
+            current.style.opacity = '0';
             setTimeout(() => {
-                s.src = "000.mp4"; // Ensure it stays on your intro video
-                v.load();
-                if (stage === 1) {
-                    msg.innerText = "Welcome, Luka, my love";
-                    btn.innerText = "START";
-                } else if (stage === 2) {
-                    msg.innerText = "Collect 10 Hearts";
-                    btn.innerText = "START GAME";
-                } else if (stage === 3) {
-                    msg.innerText = "Break the seal";
-                    btn.innerText = "BREAK";
-                } else {
-                    document.getElementById('stage').style.display = 'none';
-                    document.getElementById('final-msg').style.display = 'block';
-                }
-                v.style.opacity = '1';
-            }, 1000);
+                current.style.display = 'none';
+                const next = document.getElementById('scene-' + n);
+                next.style.display = 'flex';
+                setTimeout(() => { next.style.opacity = '1'; if(n===3) initGame(); }, 50);
+            }, 3000);
+        }
+
+        function initGame() {
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            let score = 0, heartX = 300, heartY = 0, basketX = 250;
+            canvas.addEventListener('mousemove', (e) => basketX = e.clientX - canvas.offsetLeft - 50);
+            function draw() {
+                ctx.clearRect(0,0,600,400);
+                ctx.fillStyle = 'red';
+                ctx.fillRect(heartX, heartY, 30, 30);
+                heartY += 4;
+                if (heartY > 400) { heartY = 0; heartX = Math.random() * 570; }
+                if (heartY > 350 && heartX > basketX && heartX < basketX + 100) { score++; heartY = 0; heartX = Math.random() * 570; }
+                ctx.fillStyle = '#d4c4a8';
+                ctx.fillRect(basketX, 350, 100, 20);
+                ctx.fillText("Score: " + score, 10, 20);
+                if(score < 10) requestAnimationFrame(draw); else nextScene(4);
+            }
+            draw();
         }
     </script>
 </body>
