@@ -4,52 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SLEGSWORLDS - Cinematic V</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        /* High-End Dark Fantasy Styling */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background: #050505; font-family: 'Georgia', serif; color: #f3e5ab; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #020202; font-family: 'Georgia', serif; }
         
-        /* Intro Fog Screen */
-        #intro-screen {
-            position: fixed; width: 100%; height: 100%; background: radial-gradient(circle, #151515 0%, #000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10;
-            transition: opacity 2s ease;
+        #webgl-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+        /* Cinematic Fog Intro */
+        #overlay { 
+            position: absolute; width: 100%; height: 100%; z-index: 10; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: radial-gradient(circle, #101015 0%, #000 100%); transition: opacity 2s ease; 
         }
-        #intro-title { font-size: 2.2rem; letter-spacing: 0.6rem; text-transform: uppercase; margin-bottom: 2rem; text-shadow: 0 0 15px rgba(243,229,171,0.4); }
-        .enter-btn { padding: 15px 40px; background: transparent; border: 1px solid #f3e5ab; color: #f3e5ab; font-size: 1rem; letter-spacing: 0.3rem; cursor: pointer; transition: all 0.5s; }
-        .enter-btn:hover { background: #f3e5ab; color: #000; box-shadow: 0 0 20px #f3e5ab; }
+        .luxury-btn { 
+            padding: 15px 40px; background: transparent; border: 1px solid #e5d493; 
+            color: #e5d493; font-size: 1.1rem; letter-spacing: 0.3rem; cursor: pointer; 
+            box-shadow: 0 0 15px rgba(229,212,147,0.2); transition: all 0.5s; 
+        }
+        .luxury-btn:hover { background: #e5d493; color: #000; box-shadow: 0 0 25px #e5d493; }
 
-        /* Cinematic Background Video Layer */
-        #video-container { position: absolute; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
-        video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4) contrast(1.1); }
+        /* Luxury Gothic Envelope */
+        #envelope-container { position: absolute; z-index: 5; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+        .envelope { width: 280px; height: 180px; background: #3a0808; border: 2px solid #5a1818; box-shadow: 0 30px 60px rgba(0,0,0,0.9); opacity: 0; transform: translateY(100px) scale(0.9); transition: all 2.5s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: auto; cursor: pointer; }
+        .envelope.reveal { opacity: 1; transform: translateY(0) scale(1); }
+        .seal { width: 55px; height: 55px; background: #6b0c1b; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px dashed #e5d493; color: #e5d493; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; box-shadow: 0 0 10px #000; }
 
-        /* Luxury Gothic Envelope Layer */
-        #interactive-area { position: absolute; width: 100%; height: 100%; z-index: 2; display: flex; justify-content: center; align-items: center; pointer-events: none; }
-        .envelope { width: 280px; height: 180px; background: #3a0808; border: 2px solid #5a1818; box-shadow: 0 20px 50px rgba(0,0,0,0.9); position: relative; opacity: 0; transform: translateY(50px); transition: all 2.5s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: auto; cursor: pointer; }
-        .envelope.show { opacity: 1; transform: translateY(0); }
-        .wax-seal { width: 55px; height: 55px; background: #800020; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; font-size: 1.1rem; border: 2px dashed #f3e5ab; color: #f3e5ab; }
-
-        /* Elegant Letter Overlay */
-        .letter-content { display: none; position: fixed; top: 12%; left: 6%; width: 88%; height: 76%; background: #121212; border: 1px solid #333; box-shadow: 0 0 50px #000; padding: 35px; z-index: 5; overflow-y: auto; text-align: center; border-radius: 4px; transition: all 0.5s; }
+        /* Hidden Letter Window */
+        .letter-content { display: none; position: fixed; top: 12%; left: 6%; width: 88%; height: 76%; background: #0f0f12; border: 1px solid #2a2a30; box-shadow: 0 0 50px #000; padding: 35px; z-index: 20; overflow-y: auto; text-align: center; border-radius: 4px; }
         .letter-text { font-size: 1.1rem; line-height: 2.4rem; font-style: italic; white-space: pre-line; letter-spacing: 0.05rem; color: #e5d493; }
     </style>
 </head>
 <body>
 
-    <div id="intro-screen">
-        <div id="intro-title">V Years</div>
-        <button class="enter-btn" onclick="startCinematic()">ENTER SANCTUARY</button>
+    <div id="overlay">
+        <button class="luxury-btn" onclick="initCinematic()">ENTER SANCTUARY</button>
     </div>
 
-    <div id="video-container">
-        <video id="bg-video" loop muted playsinline>
-            <source src="church.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <div id="interactive-area">
+    <div id="envelope-container">
         <div id="envelope" class="envelope" onclick="openLetter()">
-            <div class="wax-seal">V</div>
+            <div class="seal">V</div>
         </div>
     </div>
 
@@ -57,37 +51,101 @@
         <div class="letter-text">
             To my sanctuary,
 
-            [Your beautiful anniversary text or poem will go right here]
+            [Your anniversary text or poem goes right here]
 
             Happy V Years.
         </div>
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="golden-brown.mp3" type="audio/mpeg">
-    </audio>
+    <canvas id="webgl-canvas"></canvas>
 
     <script>
-        const video = document.getElementById('bg-video');
-        const music = document.getElementById('bg-music');
+        // 1. Initialize 3D Engine & Elden Ring Fog Environment
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x030305);
+        scene.fog = new THREE.FogExp2(0x030305, 0.04); // Intense volumetric fog depth
 
-        function startCinematic() {
-            document.getElementById('intro-screen').style.opacity = '0';
-            setTimeout(() => { document.getElementById('intro-screen').style.display = 'none'; }, 2000);
-            
-            // Activate High-End Atmospheric Playback
-            video.play();
-            music.play();
-            music.playbackRate = 0.75; // Perfectly slows down your track for that dark echo vibe
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // The luxury envelope rises out of the cathedral mist after 5 seconds of the camera walking
-            setTimeout(() => {
-                document.getElementById('envelope').classList.add('show');
-            }, 5000);
+        // 2. Build the Cathedral Stone Architecture Grid
+        const floorGeo = new THREE.PlaneGeometry(40, 200, 40, 200);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x111116, roughness: 0.7, wireframe: false });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
+
+        // 3. Spawning Massive Gothic Pillars down the long aisle
+        const pillarGeo = new THREE.CylinderGeometry(0.6, 0.8, 16, 8);
+        const pillarMat = new THREE.MeshStandardMaterial({ color: 0x18181f, roughness: 0.9 });
+
+        for(let i = 0; i < 15; i++) {
+            const leftPillar = new THREE.Mesh(pillarGeo, pillarMat);
+            leftPillar.position.set(-5, 8, -i * 10);
+            scene.add(leftPillar);
+
+            const rightPillar = new THREE.Mesh(pillarGeo, pillarMat);
+            rightPillar.position.set(5, 8, -i * 10);
+            scene.add(rightPillar);
+
+            // 4. Placing Glowing Amber Candle Lights on each pillar
+            const candleLight = new THREE.PointLight(0xffaa44, 2, 14);
+            candleLight.position.set(i % 2 === 0 ? -4.2 : 4.2, 3, -i * 10);
+            scene.add(candleLight);
+
+            // Small glowing sphere to visually represent the candle flame
+            const flameGeo = new THREE.SphereGeometry(0.1, 4, 4);
+            const flameMat = new THREE.MeshBasicMaterial({ color: 0xffbb66 });
+            const flame = new THREE.Mesh(flameGeo, flameMat);
+            flame.position.copy(candleLight.position);
+            scene.add(flame);
         }
+
+        // Ambient Dark Midnight Fill Light
+        const ambientLight = new THREE.AmbientLight(0x080812, 0.6);
+        scene.add(ambientLight);
+
+        // Position camera right at the entrance of the cathedral aisle
+        camera.position.set(0, 3, 5);
+
+        let cinematicActive = false;
+
+        function initCinematic() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => document.getElementById('overlay').style.display = 'none', 2000);
+            cinematicActive = true;
+        }
+
+        // 5. The Real-Time 3D Camera Loop (Smoothly walking down the aisle)
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (cinematicActive && camera.position.z > -120) {
+                camera.position.z -= 0.05; // Perfect cinematic pacing speed
+                
+                // Camera subtly sways left/right like a real human walking
+                camera.position.x = Math.sin(camera.position.z * 0.1) * 0.05;
+
+                // Once she reaches the deep altar area, summon the glowing envelope from the mist
+                if (camera.position.z < -45) {
+                    document.getElementById('envelope').classList.add('reveal');
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
 
         function openLetter() { document.getElementById('letter-window').style.display = 'block'; }
         function closeLetter() { document.getElementById('letter-window').style.display = 'none'; }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
