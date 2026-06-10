@@ -26,6 +26,7 @@
     <script>
         let stage = 0;
         const v = document.getElementById('bg-video');
+        const s = document.getElementById('vid-source');
         const msg = document.getElementById('msg');
         const btn = document.getElementById('main-btn');
 
@@ -33,6 +34,8 @@
             stage++;
             v.style.opacity = '0';
             setTimeout(() => {
+                s.src = "000.mp4"; // Ensure it stays on your intro video
+                v.load();
                 if (stage === 1) {
                     msg.innerText = "Welcome, Luka, my love";
                     btn.innerText = "START";
