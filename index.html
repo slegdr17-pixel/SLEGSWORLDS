@@ -1,41 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Force everything to the front and use a normal font */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #000; }
-        
-        /* The video sits in the background */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; font-family: Arial, sans-serif; }
         .bg-vid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; object-fit: cover; }
-        
-        /* The scenes sit in front */
-        .scene { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            display: none; flex-direction: column; align-items: center; justify-content: center; 
-            text-align: center; opacity: 0; transition: opacity 1s; z-index: 10; color: #fff;
-        }
-        
-        /* The button sits on top of everything */
-        .btn { 
-            padding: 20px 40px; background: #fff; color: #000; border: none; cursor: pointer; 
-            font-size: 1.5rem; font-weight: bold; border-radius: 10px; z-index: 20; margin-top: 20px;
-        }
-        
-        #poem-box { width: 80%; background: rgba(0,0,0,0.6); padding: 30px; line-height: 1.6; font-size: 1.2rem; border-radius: 15px; }
+        .scene { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; }
+        .btn { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fff; border: none; border-radius: 10px; margin-top: 20px; }
+        #poem-box { width: 80%; background: rgba(0,0,0,0.7); padding: 30px; line-height: 1.6; border-radius: 15px; }
     </style>
 </head>
 <body>
-    <video id="bg-vid" class="bg-vid" autoplay muted loop playsinline><source src="000.mp4" type="video/mp4"></video>
+    <video class="bg-vid" autoplay muted loop playsinline>
+        <source src="000.mp4" type="video/mp4">
+    </video>
 
-    <div id="scene-1" class="scene" style="display: flex; opacity: 1;">
+    <div id="scene-1" class="scene" style="display: flex;">
         <h1>HAPPY 5TH ANNIVERSARY</h1>
-        <button class="btn" onclick="nextScene(2)">ENTER</button>
+        <button class="btn" onclick="showScene('scene-2')">ENTER</button>
     </div>
 
     <div id="scene-2" class="scene">
         <h1>Welcome, my love, Luka</h1>
-        <button class="btn" onclick="nextScene(3)">START POEM</button>
+        <button class="btn" onclick="showScene('scene-3')">START POEM</button>
     </div>
 
     <div id="scene-3" class="scene">
@@ -46,19 +33,12 @@
             My heart a locked vault, afraid of the light.<br><br>
             Then, you built a fortress from a single glance.<br>
             Heaven saw my fractured soul,<br>
-            And sent a holy grace I did not deserve.<br>
-            Yet, storms still rage from my blinded fears.<br><br>
-            My soul still aches from the poison of the past.<br>
-            In the dark, my old scars echoed—<br>
-            And I lashed out, hurting the one I love.<br>
-            But day by day, I just fall deeper.<br><br>
-            Into your abyss, where my terrors finally erase.<br>
-            We are bound by the anchor of the Holy Spirit.<br>
+            And sent a holy grace I did not deserve.<br><br>
             Tonight, my eyes look to heaven,<br>
-            And I choose to trust in you again.<br><br>
-            Our battles, our scars, and this beautiful love—<br>
-            I leave them safely in God’s holy hands.<br><br>
-            <button class="btn" onclick="nextScene(4)">FINISH</button>
+            And I choose to trust in you again.<br>
+            I love you forever, Luka.
+            <br><br>
+            <button class="btn" onclick="showScene('scene-4')">FINISH</button>
         </div>
     </div>
 
@@ -67,11 +47,9 @@
     </div>
 
     <script>
-        function nextScene(n) {
-            document.querySelectorAll('.scene').forEach(s => { s.style.display = 'none'; s.style.opacity = '0'; });
-            const next = document.getElementById('scene-' + n);
-            next.style.display = 'flex';
-            setTimeout(() => next.style.opacity = '1', 50);
+        function showScene(id) {
+            document.querySelectorAll('.scene').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'flex';
         }
     </script>
 </body>
