@@ -1,61 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; font-family: Arial, sans-serif; }
-        .bg-vid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; object-fit: cover; }
-        .scene { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; opacity: 0; transition: opacity 2s; }
-        .btn { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fff; border: none; border-radius: 10px; margin-top: 20px; }
-        #poem-box { width: 80%; background: rgba(0,0,0,0.7); padding: 30px; line-height: 1.6; border-radius: 15px; font-size: 1.2rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Happy 5th Anniversary</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:black;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:1;
+}
+
+.bg-vid{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:0;
+}
+
+.scene{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    z-index:10;
+    opacity:0;
+    transition:opacity 3s ease-in-out;
+    padding:20px;
+}
+
+.btn{
+    padding:18px 40px;
+    margin-top:25px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:white;
+    color:black;
+    transition:.4s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+}
+
+#poem-box{
+    width:80%;
+    max-width:900px;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(8px);
+    padding:35px;
+    border-radius:18px;
+    line-height:1.9;
+    font-size:1.1rem;
+}
+
+h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+p{
+    font-size:1.2rem;
+}
+</style>
 </head>
+
 <body>
-    <video id="bg-vid" class="bg-vid" autoplay muted loop playsinline>
-        <source id="vid-src" src="000.mp4" type="video/mp4">
-    </video>
 
-    <div id="scene-1" class="scene" style="display: flex; opacity: 1;">
-        <h1>HAPPY 5TH ANNIVERSARY</h1>
-        <button class="btn" onclick="transition('scene-2', 'para.mp4')">ENTER</button>
-    </div>
+<audio id="bg-music" loop>
+    <source src="salvatore.mp3" type="audio/mpeg">
+</audio>
 
-    <div id="scene-2" class="scene">
-        <div id="poem-box">
-            I crawled from the ruins of a betrayed kingdom,<br>
-            Heavy with the dust of old wars.<br>
-            I walked with ghosts in the twilight mist,<br>
-            My heart a locked vault, afraid of the light.<br><br>
-            Then, you built a fortress from a single glance.<br>
-            Heaven saw my fractured soul,<br>
-            And sent a holy grace I did not deserve.<br>
-            Yet, storms still rage from my blinded fears.<br><br>
-            My soul still aches from the poison of the past.<br>
-            In the dark, my old scars echoed—<br>
-            And I lashed out, hurting the one I love.<br>
-            But day by day, I just fall deeper.<br><br>
-            Into your abyss, where my terrors finally erase.<br>
-            We are bound by the anchor of the Holy Spirit.<br>
-            Tonight, my eyes look to heaven,<br>
-            And I choose to trust in you again.<br><br>
-            Our battles, our scars, and this beautiful love—<br>
-            I leave them safely in God’s holy hands.<br><br>
-            <button class="btn" onclick="window.close()">FINISH</button>
-        </div>
-    </div>
+<video id="bg-vid" class="bg-vid" autoplay muted loop playsinline>
+    <source id="vid-src" src="000.mp4" type="video/mp4">
+</video>
 
-    <script>
-        function transition(nextId, videoSrc) {
-            document.querySelectorAll('.scene').forEach(s => s.style.opacity = '0');
-            setTimeout(() => {
-                document.querySelectorAll('.scene').forEach(s => s.style.display = 'none');
-                document.getElementById('vid-src').src = videoSrc;
-                document.getElementById('bg-vid').load();
-                const next = document.getElementById(nextId);
-                next.style.display = 'flex';
-                setTimeout(() => next.style.opacity = '1', 50);
-            }, 2000);
-        }
-    </script>
+<!-- Scene 1 -->
+
+<div id="scene-1" class="scene" style="display:flex; opacity:1;">
+
+    <h1>WELCOME, MY LOVE LUKA</h1>
+
+    <p>
+        This tale was forged for you.
+    </p>
+
+    <button class="btn" onclick="startStory()">
+        ENTER
+    </button>
+
+</div>
+
+
+<!-- Scene 2 -->
+
+<div id="scene-2" class="scene">
+
+<div id="poem-box">
+
+I crawled from the ruins of a betrayed kingdom,<br>
+Heavy with the dust of old wars.<br>
+I walked with ghosts in the twilight mist,<br>
+My heart a locked vault, afraid of the light.<br><br>
+
+Then, you built a fortress from a single glance.<br>
+Heaven saw my fractured soul,<br>
+And sent a holy grace I did not deserve.<br>
+Yet, storms still rage from my blinded fears.<br><br>
+
+My soul still aches from the poison of the past.<br>
+In the dark, my old scars echoed—<br>
+And I lashed out, hurting the one I love.<br>
+But day by day, I just fall deeper.<br><br>
+
+Into your abyss, where my terrors finally erase.<br>
+We are bound by the anchor of the Holy Spirit.<br>
+Tonight, my eyes look to heaven,<br>
+And I choose to trust in you again.<br><br>
+
+Our battles, our scars, and this beautiful love—<br>
+I leave them safely in God’s holy hands.<br><br>
+
+<button class="btn" onclick="showEnding()">
+FINISH
+</button>
+
+</div>
+
+</div>
+
+
+<!-- Scene 3 -->
+
+<div id="scene-3" class="scene">
+
+<h1>Forever Yours</h1>
+
+<p>
+Among countless souls beneath the same heavens,<br><br>
+
+I would still choose you.<br><br>
+
+— Sleg
+</p>
+
+</div>
+
+
+<script>
+
+const video = document.getElementById("bg-vid");
+const source = document.getElementById("vid-src");
+const music = document.getElementById("bg-music");
+
+function startStory(){
+
+    music.play();
+
+    transition(
+        "scene-2",
+        "para.mp4"
+    );
+
+}
+
+function showEnding(){
+
+    transition(
+        "scene-3",
+        "para.mp4"
+    );
+
+}
+
+function transition(nextId, videoSrc){
+
+    document.querySelectorAll(".scene").forEach(scene=>{
+        scene.style.opacity="0";
+    });
+
+    setTimeout(()=>{
+
+        document.querySelectorAll(".scene").forEach(scene=>{
+            scene.style.display="none";
+        });
+
+        source.src = videoSrc;
+
+        video.load();
+
+        video.play();
+
+        const next=document.getElementById(nextId);
+
+        next.style.display="flex";
+
+        setTimeout(()=>{
+            next.style.opacity="1";
+        },100);
+
+    },3000);
+
+}
+
+</script>
+
 </body>
 </html>
