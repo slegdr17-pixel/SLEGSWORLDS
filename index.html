@@ -8,12 +8,13 @@
         #stage { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: opacity 1s; text-align: center; }
         .btn { padding: 20px 40px; background: transparent; border: 2px solid #d4c4a8; color: #d4c4a8; cursor: pointer; font-size: 2rem; font-family: 'UnifrakturMaguntia'; transition: 0.3s; }
         .btn:hover { background: #d4c4a8; color: #000; }
-        /* Poem/Final Message Styling */
         #final-msg { display: none; padding: 50px; font-size: 3rem; text-align: center; }
     </style>
 </head>
 <body>
-    <video id="bg-video" class="bg-vid" autoplay muted loop><source id="vid-source" src="" type="video/mp4"></video>
+    <video id="bg-video" class="bg-vid" autoplay muted loop>
+        <source id="vid-source" src="intro.mp4" type="video/mp4">
+    </video>
 
     <div id="stage">
         <h1 id="msg" style="font-size: 4rem; text-shadow: 0 0 20px #5a1818;">Thank you for everything</h1>
@@ -31,18 +32,16 @@
 
         function nextStage() {
             stage++;
-            v.style.opacity = '0'; // Fade out video during transition
-            
+            v.style.opacity = '0';
             setTimeout(() => {
                 if (stage === 1) {
-                    s.src = "00.mp4"; // The Intro Video
+                    s.src = "000.mp4"; // Updated to match your file name
                     v.load();
                     msg.innerText = "Welcome, Luka, my love";
                     btn.innerText = "START";
                 } else if (stage === 2) {
                     msg.innerText = "Collect 10 Hearts";
                     btn.innerText = "START GAME";
-                    // Here we will add the Game Canvas later
                 } else if (stage === 3) {
                     msg.innerText = "Break the seal";
                     btn.innerText = "BREAK";
@@ -50,7 +49,7 @@
                     document.getElementById('stage').style.display = 'none';
                     document.getElementById('final-msg').style.display = 'block';
                 }
-                v.style.opacity = '1'; // Fade back in
+                v.style.opacity = '1';
             }, 1000);
         }
     </script>
