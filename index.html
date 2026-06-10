@@ -3,29 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { margin: 0; overflow: hidden; background: #000; color: #fff; font-family: Arial, sans-serif; }
-        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
-        #bg-img { position: fixed; width: 100%; height: 100%; z-index: -1; object-fit: cover; display: none; }
-        .scene { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; opacity: 0; transition: opacity 2s; z-index: 10; position: relative; }
-        .btn { padding: 20px 40px; background: #fff; color: #000; border: none; cursor: pointer; font-size: 1.5rem; font-weight: bold; border-radius: 10px; margin-top: 20px; }
-        #poem-box { width: 80%; background: rgba(0,0,0,0.7); padding: 30px; line-height: 1.6; font-size: 1.2rem; border-radius: 15px; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; font-family: Arial, sans-serif; }
+        .bg-vid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; object-fit: cover; }
+        .scene { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; opacity: 0; transition: opacity 2s; }
+        .btn { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fff; border: none; border-radius: 10px; margin-top: 20px; }
+        #poem-box { width: 80%; background: rgba(0,0,0,0.7); padding: 30px; line-height: 1.6; border-radius: 15px; font-size: 1.2rem; }
     </style>
 </head>
 <body>
-    <video id="bg-vid" class="bg-vid" autoplay muted loop playsinline><source id="vid-src" src="000.mp4" type="video/mp4"></video>
-    <img id="bg-img" src="game pic.avif">
+    <video id="bg-vid" class="bg-vid" autoplay muted loop playsinline>
+        <source id="vid-src" src="000.mp4" type="video/mp4">
+    </video>
 
     <div id="scene-1" class="scene" style="display: flex; opacity: 1;">
         <h1>HAPPY 5TH ANNIVERSARY</h1>
-        <button class="btn" onclick="transition(2, 'game')">ENTER</button>
+        <button class="btn" onclick="transition('scene-2', 'para.mp4')">ENTER</button>
     </div>
 
     <div id="scene-2" class="scene">
-        <canvas id="game-canvas" width="600" height="400" style="background:rgba(0,0,0,0.5)"></canvas>
-        <button class="btn" onclick="transition(3, 'para.mp4')">NEXT</button>
-    </div>
-
-    <div id="scene-3" class="scene">
         <div id="poem-box">
             I crawled from the ruins of a betrayed kingdom,<br>
             Heavy with the dust of old wars.<br>
@@ -33,30 +28,34 @@
             My heart a locked vault, afraid of the light.<br><br>
             Then, you built a fortress from a single glance.<br>
             Heaven saw my fractured soul,<br>
-            And sent a holy grace I did not deserve.<br><br>
+            And sent a holy grace I did not deserve.<br>
+            Yet, storms still rage from my blinded fears.<br><br>
+            My soul still aches from the poison of the past.<br>
+            In the dark, my old scars echoed—<br>
+            And I lashed out, hurting the one I love.<br>
+            But day by day, I just fall deeper.<br><br>
+            Into your abyss, where my terrors finally erase.<br>
+            We are bound by the anchor of the Holy Spirit.<br>
             Tonight, my eyes look to heaven,<br>
-            And I choose to trust in you again.<br>
-            I love you forever, Luka.<br><br>
+            And I choose to trust in you again.<br><br>
+            Our battles, our scars, and this beautiful love—<br>
+            I leave them safely in God’s holy hands.<br><br>
             <button class="btn" onclick="window.close()">FINISH</button>
         </div>
     </div>
 
     <script>
-        function transition(n, media) {
-            document.querySelectorAll('.scene').forEach(s => { s.style.opacity = '0'; });
+        function transition(nextId, videoSrc) {
+            document.querySelectorAll('.scene').forEach(s => s.style.opacity = '0');
             setTimeout(() => {
-                document.querySelectorAll('.scene').forEach(s => { s.style.display = 'none'; });
-                const video = document.getElementById('bg-vid');
-                const img = document.getElementById('bg-img');
-                if (media === 'game') { img.style.display = 'block'; video.style.display = 'none'; }
-                else { img.style.display = 'none'; video.style.display = 'block'; document.getElementById('vid-src').src = media; video.load(); }
-                const next = document.getElementById('scene-' + n);
+                document.querySelectorAll('.scene').forEach(s => s.style.display = 'none');
+                document.getElementById('vid-src').src = videoSrc;
+                document.getElementById('bg-vid').load();
+                const next = document.getElementById(nextId);
                 next.style.display = 'flex';
-                setTimeout(() => { next.style.opacity = '1'; }, 50);
-                if(n === 2) initGame();
+                setTimeout(() => next.style.opacity = '1', 50);
             }, 2000);
         }
-        function initGame() { /* Placeholder for game logic */ }
     </script>
 </body>
 </html>
