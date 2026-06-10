@@ -8,14 +8,14 @@
         #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.4); }
         .btn { padding: 20px 50px; background: rgba(0,0,0,0.6); border: 1px solid #e5d493; color: #e5d493; cursor: pointer; letter-spacing: 5px; font-size: 1.2rem; transition: 0.3s; }
         .btn:hover { background: #e5d493; color: #000; }
-        #main-content { display: none; opacity: 0; transition: opacity 2s ease-in; text-align: center; margin-top: 10%; }
-        #poem-box { width: 60%; margin: 0 auto; background: rgba(0,0,0,0.8); padding: 40px; border: 1px solid #5a1818; box-shadow: 0 0 30px #000; }
+        #main-content { display: none; opacity: 0; transition: opacity 2s ease-in; text-align: center; margin-top: 5%; }
+        #poem-box { width: 70%; margin: 0 auto; background: rgba(0,0,0,0.7); padding: 40px; border: 1px solid #5a1818; box-shadow: 0 0 30px #000; }
     </style>
 </head>
 <body>
 
     <video id="bg-video" class="bg-vid" autoplay muted loop>
-        <source id="vid-source" src="YOUR_INTRO_FILE_NAME.mp4" type="video/mp4">
+        <source id="vid-source" src="intro.mp4" type="video/mp4">
     </video>
 
     <div id="overlay">
@@ -25,8 +25,25 @@
 
     <div id="main-content">
         <div id="poem-box">
-            <p style="white-space:pre-line; font-style:italic; line-height:2.0; font-size: 1.3rem;">
-                [Insert your poem here]
+            <p style="white-space:pre-line; font-style:italic; line-height:1.8; font-size: 1.2rem;">
+                I crawled from the ruins of a betrayed kingdom,<br>
+                Heavy with the dust of old wars.<br>
+                I walked with ghosts in the twilight mist,<br>
+                My heart a locked vault, afraid of the light.<br><br>
+                Then, you built a fortress from a single glance.<br>
+                Heaven saw my fractured soul,<br>
+                And sent a holy grace I did not deserve.<br>
+                Yet, storms still rage from my blinded fears.<br><br>
+                My soul still aches from the poison of the past.<br>
+                In the dark, my old scars echoed—<br>
+                And I lashed out, hurting the one I love.<br>
+                But day by day, I just fall deeper.<br><br>
+                Into your abyss, where my terrors finally erase.<br>
+                We are bound by the anchor of the Holy Spirit.<br>
+                Tonight, my eyes look to heaven,<br>
+                And I choose to trust in you again.<br><br>
+                Our battles, our scars, and this beautiful love—<br>
+                I leave them safely in God’s holy hands
             </p>
         </div>
     </div>
@@ -42,13 +59,11 @@
             if (clicks < 3) {
                 msg.innerText = "Break the seal (" + (3 - clicks) + ")";
             } else {
-                // Switch to the cinematic walk video
-                source.src = "WhatsApp%20Video%202026-06-10%20at%202.57.17%20PM.mp4";
+                source.src = "para.mp4";
                 video.load();
                 document.getElementById('overlay').style.display = 'none';
-                const main = document.getElementById('main-content');
-                main.style.display = 'block';
-                setTimeout(() => { main.style.opacity = '1'; }, 50);
+                document.getElementById('main-content').style.display = 'block';
+                setTimeout(() => { document.getElementById('main-content').style.opacity = '1'; }, 50);
             }
         }
     </script>
