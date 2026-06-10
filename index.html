@@ -3,35 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { margin: 0; overflow: hidden; background: #020202; color: #d4c4a8; font-family: 'Georgia', serif; }
-        #video-bg { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
-        #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.4); }
-        .btn { padding: 20px 50px; background: rgba(0,0,0,0.6); border: 2px solid #5a1818; color: #e5d493; cursor: pointer; letter-spacing: 5px; font-size: 1.5rem; text-transform: uppercase; transition: 0.3s; }
-        .btn:hover { background: #5a1818; color: #fff; }
-        #poem-box { display: none; position: absolute; top: 15%; left: 20%; width: 60%; height: 70%; background: rgba(10, 10, 10, 0.85); border: 1px solid #4a1010; padding: 50px; overflow-y: auto; text-align: center; box-shadow: 0 0 20px #000; }
+        body { margin: 0; overflow: hidden; background: url('https://i.pinimg.com/736x/95/05/f4/9505f42db6c255efe9596de522844f67.jpg') no-repeat center center fixed; background-size: cover; color: #d4c4a8; font-family: 'Georgia', serif; }
+        #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.6); }
+        .btn { padding: 20px 50px; background: transparent; border: 1px solid #e5d493; color: #e5d493; cursor: pointer; letter-spacing: 5px; font-size: 1.2rem; transition: 0.3s; }
+        .btn:hover { background: #e5d493; color: #000; }
+        #main-content { display: none; text-align: center; margin-top: 10%; }
+        #poem-box { width: 60%; margin: 0 auto; background: rgba(0,0,0,0.7); padding: 40px; border: 1px solid #5a1818; }
     </style>
 </head>
 <body>
 
-    <video autoplay muted loop id="video-bg">
-        <source src="intro.mp4" type="video/mp4">
-    </video>
-
     <div id="overlay">
-        <button class="btn" onclick="revealPoem()">ENTER THE SANCTUARY</button>
+        <h1 style="letter-spacing: 10px; text-transform: uppercase;">Welcome, Luka</h1>
+        <button class="btn" onclick="startExperience()">ENTER</button>
     </div>
 
-    <div id="poem-box" onclick="this.style.display='none'">
-        <p style="white-space:pre-line; font-style:italic; line-height:2.2; font-size: 1.3rem;">
-            I crawled from the ruins of a betrayed kingdom,
-            Heavy with the dust of old wars...
-        </p>
+    <div id="main-content">
+        <div id="poem-box" onclick="this.style.display='none'">
+            <p style="white-space:pre-line; font-style:italic; line-height:2.0; font-size: 1.3rem;">
+                [Insert your poem here]
+            </p>
+        </div>
     </div>
 
     <script>
-        function revealPoem() {
+        function startExperience() {
             document.getElementById('overlay').style.display = 'none';
-            document.getElementById('poem-box').style.display = 'block';
+            document.getElementById('main-content').style.display = 'block';
         }
     </script>
 </body>
