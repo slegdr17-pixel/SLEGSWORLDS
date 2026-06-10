@@ -1,27 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; font-family: Arial, sans-serif; }
-        .bg-vid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; object-fit: cover; }
-        .scene { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; }
-        .btn { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fff; border: none; border-radius: 10px; margin-top: 20px; }
-        #poem-box { width: 80%; background: rgba(0,0,0,0.7); padding: 30px; line-height: 1.6; border-radius: 15px; }
+        * { font-family: 'UnifrakturMaguntia', cursive !important; }
+        body { margin: 0; overflow: hidden; background: #000; color: #d4c4a8; }
+        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
+        #bg-img { position: fixed; width: 100%; height: 100%; z-index: -1; object-fit: cover; display: none; }
+        .scene { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; opacity: 0; transition: opacity 2s; }
+        .btn { padding: 20px 40px; background: transparent; border: 2px solid #d4c4a8; color: #d4c4a8; cursor: pointer; font-size: 2rem; }
     </style>
 </head>
 <body>
-    <video class="bg-vid" autoplay muted loop playsinline>
-        <source src="000.mp4" type="video/mp4">
-    </video>
+    <video id="bg-vid" class="bg-vid" autoplay muted loop playsinline><source id="vid-src" src="000.mp4" type="video/mp4"></video>
+    <img id="bg-img" src="game pic.avif">
 
-    <div id="scene-1" class="scene" style="display: flex;">
+    <div id="scene-1" class="scene" style="display: flex; opacity: 1;">
         <h1>HAPPY 5TH ANNIVERSARY</h1>
-        <button class="btn" onclick="showScene('scene-2')">ENTER</button>
+        <button class="btn" onclick="transition(2, 'game')">ENTER</button>
     </div>
 
     <div id="scene-2" class="scene">
-        <div id="poem-box">
+        <canvas id="game-canvas" width="600" height="400"></canvas>
+        <button class="btn" onclick="transition(3, 'para.mp4')">NEXT</button>
+    </div>
+
+    <div id="scene-3" class="scene">
+        <div id="poem-box" style="background: rgba(0,0,0,0.8); padding: 40px; font-size: 1.5rem;">
             I crawled from the ruins of a betrayed kingdom,<br>
             Heavy with the dust of old wars.<br>
             I walked with ghosts in the twilight mist,<br>
@@ -31,17 +36,26 @@
             And sent a holy grace I did not deserve.<br><br>
             Tonight, my eyes look to heaven,<br>
             And I choose to trust in you again.<br>
-            I love you forever, Luka.
-            <br><br>
+            I love you forever, Luka.<br><br>
             <button class="btn" onclick="window.close()">FINISH</button>
         </div>
     </div>
 
     <script>
-        function showScene(id) {
-            document.querySelectorAll('.scene').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'flex';
+        function transition(n, media) {
+            document.querySelectorAll('.scene').forEach(s => { s.style.display = 'none'; s.style.opacity = '0'; });
+            const video = document.getElementById('bg-vid');
+            const img = document.getElementById('bg-img');
+            
+            if (media === 'game') { img.style.display = 'block'; video.style.display = 'none'; }
+            else { img.style.display = 'none'; video.style.display = 'block'; document.getElementById('vid-src').src = media; video.load(); }
+            
+            const next = document.getElementById('scene-' + n);
+            next.style.display = 'flex';
+            setTimeout(() => next.style.opacity = '1', 100);
+            if(n === 2) initGame();
         }
+        function initGame() { /* Add your game logic here */ }
     </script>
 </body>
 </html>
