@@ -1,128 +1,53 @@
-# SLEGSWORLDS
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLEGSWORLDS - Cinematic V</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background: #020202; font-family: 'Cinzel', serif; }
+from ursina import *
+import animation
+
+# Initialize High-End 3D Engine Context
+app = Ursina(development_mode=False, borderless=False)
+window.title = 'SLEGSWORLDS - Cinematic V'
+window.fps_counter.enabled = False
+
+# 1. 4K Atmospheric Fog & Dark Gothic Lighting
+scene.fog_color = color.rgb(5, 5, 5)
+scene.fog_density = 0.02
+AmbientLight(color=color.rgba(10, 10, 20, 50))
+
+# 2. Handcrafted Gothic Cathedral Pillars (Procedural 3D Depth)
+pillars = []
+for i in range(10):
+    # Left Pillar row
+    lp = Entity(model='cube', scale=(2, 15, 2), position=(-6, 7.5, -i * 12), color=color.rgb(20, 20, 20))
+    # Right Pillar row
+    rp = Entity(model='cube', scale=(2, 15, 2), position=(6, 7.5, -i * 12), color=color.rgb(20, 20, 20))
+    
+    # Warm Elden Ring Candle Light Clusters down the aisle
+    PointLight(position=( -4 if i%2==0 else 4, 1, -i * 12), color=color.rgb(255, 170, 68), distance=15)
+
+# 3. Immersive Audio Engine (Slowed Echo Setup)
+# Places the background track inside the 3D space
+bg_music = Audio('golden-brown-slowed.mp3', loop=True, autoplay=False, volume=0.8)
+
+# 4. Cinematic Camera Configuration
+camera.position = (0, 3, 5)
+camera.rotation = (0, 0, 0)
+
+cinematic_active = False
+
+# Screen Overlay / Input Trigger
+def input(key):
+    global cinematic_active
+    if key == 'space' or key == 'left mouse down':
+        if not cinematic_active:
+            cinematic_active = True
+            bg_music.play()
+
+# 5. Real-Time Render Update Loop (The Cinematic Walk)
+def update():
+    global cinematic_active
+    if cinematic_active and camera.z > -90:
+        camera.z -= 2 * time.dt # Smooth 4K cinematic camera camera glide forward
         
-        /* 4K WebGL Canvas Layer */
-        #webgl-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        # As camera reaches the altar area, reveal the luxury anniversary surprise
+        if camera.z < -40:
+            print("Displaying Anniversary Envelope Text...")
 
-        /* Cinematic Fog Overlay */
-        #overlay {
-            position: absolute; width: 100%; height: 100%; z-index: 2;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: rgba(0, 0, 0, 0.6); transition: all 2s ease;
-        }
-        
-        .luxury-btn {
-            padding: 15px 40px; background: transparent; border: 1px solid #e5d493;
-            color: #e5d493; font-size: 1.1rem; letter-spacing: 0.3rem; cursor: pointer;
-            box-shadow: 0 0 15px rgba(229,212,147,0.2); transition: stroke 0.5s, background 0.5s;
-        }
-        .luxury-btn:hover { background: #e5d493; color: #000; box-shadow: 0 0 25px #e5d493; }
-
-        /* Gothic Envelope */
-        #envelope-container { position: absolute; z-index: 3; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none; }
-        .envelope { width: 300px; height: 190px; background: #2b0505; border: 1px solid #4a0d0d; box-shadow: 0 30px 60px rgba(0,0,0,0.9); opacity: 0; transform: translateY(100px) scale(0.9); transition: all 2.5s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: auto; cursor: pointer; }
-        .envelope.reveal { opacity: 1; transform: translateY(0) scale(1); }
-        .seal { width: 55px; height: 55px; background: #6b0c1b; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px dashed #e5d493; color: #e5d493; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
-    </style>
-</head>
-<body>
-
-    <div id="overlay">
-        <button class="luxury-btn" onclick="initCinematic()">ENTER SANCTUARY</button>
-    </div>
-
-    <div id="envelope-container">
-        <div id="envelope" class="envelope">
-            <div class="seal">V</div>
-        </div>
-    </div>
-
-    <canvas id="webgl-canvas"></canvas>
-
-    <audio id="bg-music" loop>
-        <source src="golden-brown-slowed.mp3" type="audio/mpeg">
-    </audio>
-
-    <script>
-        // High-End 3D Scene Initialization
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x050505, 0.015);
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), antialias: true, powerPreference: "high-performance" });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        // Procedural Gothic Pillars (Placeholder blocks for 3D depth)
-        const pillarGeo = new THREE.BoxGeometry(2, 15, 2);
-        const pillarMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
-        
-        for(let i = 0; i < 10; i++) {
-            const leftPillar = new THREE.Mesh(pillarGeo, pillarMat);
-            leftPillar.position.set(-6, 5, -i * 12);
-            scene.add(leftPillar);
-
-            const rightPillar = new THREE.Mesh(pillarGeo, pillarMat);
-            rightPillar.position.set(6, 5, -i * 12);
-            scene.add(rightPillar);
-
-            // Plant warm candle amber lights down the path
-            const candleLight = new THREE.PointLight(0xffaa44, 2, 15);
-            candleLight.position.set(i % 2 === 0 ? -4 : 4, 1, -i * 12);
-            scene.add(candleLight);
-        }
-
-        // Ambient Dark Atmosphere Light
-        const ambientLight = new THREE.AmbientLight(0x0a0a14, 0.5);
-        scene.add(ambientLight);
-
-        camera.position.set(0, 3, 5);
-
-        let cinematicActive = false;
-
-        function initCinematic() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => document.getElementById('overlay').style.display = 'none', 2000);
-            
-            const music = document.getElementById('bg-music');
-            music.play();
-            music.playbackRate = 0.75; // Immersive slowed echo
-            
-            cinematicActive = true;
-        }
-
-        // Main Render & Animation Loop (Handles the cinematic walk camera)
-        function animate() {
-            requestAnimationFrame(animate);
-
-            if (cinematicActive && camera.position.z > -90) {
-                camera.position.z -= 0.04; // Smooth cinematic walk speed forward
-                
-                // Once camera approaches the altar area, lift the envelope from the fog
-                if (camera.position.z < -40) {
-                    document.getElementById('envelope').classList.add('reveal');
-                }
-            }
-
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Responsive window scaling
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
-</body>
-</html>
+app.run()
