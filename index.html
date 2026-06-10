@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLEGSWORLDS - Cinematic V</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #020202; font-family: 'Cinzel', serif; }
+        #webgl-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        #overlay { position: absolute; width: 100%; height: 100%; z-index: 2; display: flex; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.7); transition: opacity 2s ease; }
+        .luxury-btn { padding: 15px 40px; background: transparent; border: 1px solid #e5d493; color: #e5d493; font-size: 1.1rem; letter-spacing: 0.3rem; cursor: pointer; box-shadow: 0 0 15px rgba(229,212,147,0.2); transition: all 0.5s; }
+        .luxury-btn:hover { background: #e5d493; color: #000; box-shadow: 0 0 25px #e5d493; }
+        #envelope-container { position: absolute; z-index: 3; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+        .envelope { width: 280px; height: 180px; background: #2b0505; border: 1px solid #4a0d0d; box-shadow: 0 30px 60px rgba(0,0,0,0.9); opacity: 0; transform: translateY(100px); transition: all 2.5s ease; pointer-events: auto; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .envelope.reveal { opacity: 1; transform: translateY(0); }
+        .seal { width: 55px; height: 55px; background: #6b0c1b; border-radius: 50%; border: 2px dashed #e5d493; color: #e5d493; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <div id="overlay">
+        <button class="luxury-btn" onclick="initCinematic()">ENTER SANCTUARY</button>
+    </div>
+
+    <div id="envelope-container">
+        <div id="envelope" class="envelope">
+            <div class="seal">V</div>
+        </div>
+    </div>
+
+    <canvas id="webgl-canvas"></canvas>
+
+    <audio id="bg-music" loop>
+        <source src="https://actions.google.com/sounds/v1/ambiences/ambient_hum_air_conditioner.ogg" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.025);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Procedural Dark Pillars
+        const pillarGeo = new THREE.BoxGeometry(1.5, 12, 1.5);
+        const pillarMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
+        
+        for(let i = 0; i < 12; i++) {
+            const lp = new THREE.Mesh(pillarGeo, pillarMat); lp.position.set(-5, 6, -i * 10); scene.add(lp);
+            const rp = new THREE.Mesh(pillarGeo, pillarMat); rp.position.set(5, 6, -i * 10); scene.add(rp);
+
+            const candleLight = new THREE.PointLight(0xffaa44, 1.5, 12);
+            candleLight.position.set(i % 2 === 0 ? -3.5 : 3.5, 1.5, -i * 10);
+            scene.add(candleLight);
+        }
+
+        const ambientLight = new THREE.AmbientLight(0x0a0a14, 0.4);
+        scene.add(ambientLight);
+
+        camera.position.set(0, 2.5, 5);
+        let cinematicActive = false;
+
+        function initCinematic() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => document.getElementById('overlay').style.display = 'none', 2000);
+            document.getElementById('bg-music').play();
+            cinematicActive = true;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (cinematicActive && camera.position.z > -100) {
+                camera.position.z -= 0.05;
+                if (camera.position.z < -40) {
+                    document.getElementById('envelope').classList.add('reveal');
+                }
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
