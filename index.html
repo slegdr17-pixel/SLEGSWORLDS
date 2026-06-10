@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <style>
-        /* Standard readable font */
-        body { margin: 0; overflow: hidden; background: #000; color: #fff; font-family: Arial, sans-serif; }
-        .bg-vid { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
-        .scene { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; opacity: 0; transition: opacity 2s; }
-        .btn { padding: 15px 30px; background: #fff; color: #000; border: none; cursor: pointer; font-size: 1.2rem; font-weight: bold; border-radius: 5px; }
-        #poem-box { width: 80%; background: rgba(0,0,0,0.7); padding: 30px; line-height: 1.6; font-size: 1.2rem; }
+        /* Force everything to the front and use a normal font */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #000; }
+        
+        /* The video sits in the background */
+        .bg-vid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; object-fit: cover; }
+        
+        /* The scenes sit in front */
+        .scene { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            display: none; flex-direction: column; align-items: center; justify-content: center; 
+            text-align: center; opacity: 0; transition: opacity 1s; z-index: 10; color: #fff;
+        }
+        
+        /* The button sits on top of everything */
+        .btn { 
+            padding: 20px 40px; background: #fff; color: #000; border: none; cursor: pointer; 
+            font-size: 1.5rem; font-weight: bold; border-radius: 10px; z-index: 20; margin-top: 20px;
+        }
+        
+        #poem-box { width: 80%; background: rgba(0,0,0,0.6); padding: 30px; line-height: 1.6; font-size: 1.2rem; border-radius: 15px; }
     </style>
 </head>
 <body>
-    <video id="bg-vid" autoplay muted loop playsinline><source src="000.mp4" type="video/mp4"></video>
+    <video id="bg-vid" class="bg-vid" autoplay muted loop playsinline><source src="000.mp4" type="video/mp4"></video>
 
     <div id="scene-1" class="scene" style="display: flex; opacity: 1;">
         <h1>HAPPY 5TH ANNIVERSARY</h1>
@@ -56,7 +71,7 @@
             document.querySelectorAll('.scene').forEach(s => { s.style.display = 'none'; s.style.opacity = '0'; });
             const next = document.getElementById('scene-' + n);
             next.style.display = 'flex';
-            setTimeout(() => next.style.opacity = '1', 100);
+            setTimeout(() => next.style.opacity = '1', 50);
         }
     </script>
 </body>
