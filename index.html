@@ -4,25 +4,28 @@
     <meta charset="UTF-8">
     <title>SLEGSWORLDS</title>
     <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         body {
             margin: 0;
             overflow: hidden;
             background: url('https://i.pinimg.com/1200x/4c/0b/cc/4c0bcc4430107a637a3eee2bfb827c08.jpg') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Georgia', serif;
+            animation: fadeIn 4s ease-in; /* The cinematic entry */
         }
-        #overlay { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.6); z-index: 10; transition: 2s; }
-        .btn { padding: 15px 40px; background: transparent; border: 1px solid #e5d493; color: #e5d493; cursor: pointer; letter-spacing: 3px; font-size: 1.2rem; }
+        #overlay { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.7); z-index: 10; transition: 2s; }
+        .btn { padding: 15px 40px; background: transparent; border: 1px solid #e5d493; color: #e5d493; cursor: pointer; letter-spacing: 3px; font-size: 1.2rem; transition: 0.5s; }
+        .btn:hover { background: #e5d493; color: #000; }
         #env-container { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none; }
         .envelope { width: 150px; height: 100px; background: #5a1818; border: 2px solid #3a0808; opacity: 0; transition: 3s; pointer-events: auto; cursor: pointer; display: flex; justify-content: center; align-items: center; color: #e5d493; font-weight: bold; }
-        .envelope.show { opacity: 1; }
+        .envelope.show { opacity: 1; transform: scale(1.1); }
         #letter { display: none; position: fixed; top: 10%; left: 15%; width: 70%; height: 80%; background: rgba(15, 15, 18, 0.95); color: #e5d493; padding: 40px; overflow-y: auto; z-index: 20; text-align: center; border: 1px solid #5a1818; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <button class="btn" onclick="start()">ENTER SANCTUARY</button>
+        <button class="btn" onclick="start()">ENTER OUR FOREVER</button>
     </div>
 
     <div id="env-container">
