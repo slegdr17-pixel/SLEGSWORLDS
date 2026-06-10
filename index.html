@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <style>
         body { margin: 0; overflow: hidden; background: url('https://i.pinimg.com/736x/95/05/f4/9505f42db6c255efe9596de522844f67.jpg') no-repeat center center fixed; background-size: cover; color: #d4c4a8; font-family: 'Georgia', serif; transition: background 1.5s ease-in-out; }
+        
+        /* Video background for the cinematic walk */
+        #cinematic-walk { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; display: none; object-fit: cover; }
+        
         #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.6); }
         .btn { padding: 20px 50px; background: transparent; border: 1px solid #e5d493; color: #e5d493; cursor: pointer; letter-spacing: 5px; font-size: 1.2rem; transition: 0.3s; }
         .btn:hover { background: #e5d493; color: #000; }
+        
         #main-content { display: none; opacity: 0; transition: opacity 2s ease-in; text-align: center; margin-top: 10%; }
         #poem-box { width: 60%; margin: 0 auto; background: rgba(0,0,0,0.8); padding: 40px; border: 1px solid #5a1818; box-shadow: 0 0 30px #000; }
     </style>
 </head>
 <body>
+
+    <video id="cinematic-walk" autoplay muted loop>
+        <source src="walk.mp4" type="video/mp4">
+    </video>
 
     <div id="overlay">
         <h1 id="msg" style="letter-spacing: 10px; text-transform: uppercase;">Welcome, Luka</h1>
@@ -34,8 +43,8 @@
             if (clicks < 3) {
                 msg.innerText = "Break the seal (" + (3 - clicks) + ")";
             } else {
-                document.body.style.backgroundImage = "url('https://i.pinimg.com/1200x/88/71/4c/88714cc3d2ba2b7654cd15ff6250be68.jpg')";
                 document.getElementById('overlay').style.display = 'none';
+                document.getElementById('cinematic-walk').style.display = 'block';
                 const main = document.getElementById('main-content');
                 main.style.display = 'block';
                 setTimeout(() => { main.style.opacity = '1'; }, 50);
